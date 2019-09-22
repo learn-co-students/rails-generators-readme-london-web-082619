@@ -12,6 +12,10 @@ class PostsController < ApplicationController
   end
 
   def create
+    # Failure/Error: @post = Post.create(title: "My Post", description: "My post desc", post_status: "draft")
+     
+#      ActiveModel::UnknownAttributeError:
+#        unknown attribute 'post_status' for Post.
     @post = Post.new(params)
     @post.save
     redirect_to post_path(@post)
@@ -19,11 +23,15 @@ class PostsController < ApplicationController
 
   def update
     @post = Post.find(params[:id])
-    @post.update(params.require(:post))
+    @post.update(post_params)
     redirect_to post_path(@post)
   end
 
   def edit
     @post = Post.find(params[:id])
+  end
+
+  def post_params
+    params.require(:post).permit(:title, :description)
   end
 end
